@@ -1,8 +1,8 @@
 # Yolov8-ncnn
 convert yolov8 to ncnn
-##### Download model
+#### Download model
 you can download yolov8 model from https://github.com/ultralytics/ultralytics/tree/15b3b0365ab2f12993a58985f3cb7f2137409a0c
-##### Modify 'forward' methods in 'ultralytics/ultralytics/nn/modules.py'
+#### Modify 'forward' methods in 'ultralytics/ultralytics/nn/modules.py'
 - For detection
 1. class C2f(nn.Module)
  ```python
@@ -83,3 +83,19 @@ you can download yolov8 model from https://github.com/ultralytics/ultralytics/tr
         # !< https://github.com/FeiGeChuanShu/ncnn-android-yolov8
         return (torch.cat([x, mc], 1).permute(0, 2, 1), p.view(bs, self.nm, -1)) if self.export else (torch.cat([x[0], mc], 1), (x[1], mc, p))
 ```
+#### Run ```export.py``` to get .onnx
+exporty.py
+```python
+from ultralytics import YOLO
+# load model
+model = YOLO("/home/yolov8/yolov8n.pt")  # it is better to add absoulete path
+
+# Export model
+success = model.export(format="onnx", opset=12, simplify=True) 
+```
+#### Run ```onnx2ncnn``` to get ncnn model files
+```python
+./onnx2ncnn /home/yolov8/yolov8n.onnx /home/yolov8n.param /home/yolov8/yolov8n.bin
+```
+##### build main.cpp to run the model
+you can read my code and modify something
