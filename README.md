@@ -69,7 +69,7 @@ you can download yolov8 model from https://github.com/ultralytics/ultralytics/tr
         pred = torch.cat([xi.view(shape[0], self.no, -1) for xi in x], 2)  # different with detection
         return pred
 ```
-3. ```class Segment(Detect)
+3. ```class Segment(Detect)```
 ```python
     def forward(self, x):
         p = self.proto(x[0])  # mask protos
